@@ -1,20 +1,27 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
 
 const Card = ({ name, username, id }) => {
 
-  const addFav = ()=>{
-    // Aqui iria la logica para agregar la Card en el localStorage
-  }
+  const addFav = () => {
+    const favs = JSON.parse(localStorage.getItem("favs")) || [];
+    const newFav = { name, username, id };
+    
+    if (!favs.some(fav => fav.id === id)) {
+      favs.push(newFav);
+      localStorage.setItem("favs", JSON.stringify(favs));
+      alert(`${name} has been added to your favorites!`);
+    } else {
+      alert(`${name} is already in your favorites.`);
+    }
+  };
 
   return (
     <div className="card">
-        {/* En cada card deberan mostrar en name - username y el id */}
-
-        {/* No debes olvidar que la Card a su vez servira como Link hacia la pagina de detalle */}
-
-        {/* Ademas deberan integrar la logica para guardar cada Card en el localStorage */}
-        <button onClick={addFav} className="favButton">Add fav</button>
+      <h3>{name}</h3>
+      <p>{username}</p>
+      <Link to={`/dentist/${id}`}>View Details</Link>
+      <button onClick={addFav} className="favButton">Add fav</button>
     </div>
   );
 };
